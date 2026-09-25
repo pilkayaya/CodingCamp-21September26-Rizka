@@ -1,0 +1,768 @@
+/* css/style.css — Expense & Budget Visualizer */
+
+/* ─────────────────────────────────────────────
+   Design Tokens
+   ───────────────────────────────────────────── */
+:root {
+  /* Page & surfaces */
+  --clr-bg:           #f0f2f7;
+  --clr-surface:      #ffffff;
+  --clr-border:       #e4e8f0;
+  --clr-border-input: #d0d7e3;
+
+  /* Primary blue */
+  --clr-primary:        #2563eb;
+  --clr-primary-hover:  #1d4ed8;
+  --clr-primary-active: #1e40af;
+  --clr-primary-light:  #eff6ff;
+  --clr-primary-ring:   #bfdbfe;
+
+  /* Danger */
+  --clr-danger:       #dc2626;
+  --clr-danger-hover: #b91c1c;
+  --clr-danger-light: #fef2f2;
+  --clr-danger-ring:  #fca5a5;
+
+  /* Badge */
+  --clr-badge-bg:     #dbeafe;
+  --clr-badge-text:   #1e40af;
+  --clr-badge-border: #bfdbfe;
+
+  /* Text */
+  --clr-text-primary: #111827;
+  --clr-text-body:    #374151;
+  --clr-text-muted:   #6b7280;
+  --clr-text-error:   #b91c1c;
+
+  /* Focus */
+  --clr-focus: #3b82f6;
+
+  /* Typography */
+  --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
+               Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+
+  /* Spacing */
+  --sp-1: 0.25rem;
+  --sp-2: 0.5rem;
+  --sp-3: 0.75rem;
+  --sp-4: 1rem;
+  --sp-5: 1.25rem;
+  --sp-6: 1.5rem;
+  --sp-8: 2rem;
+  --sp-10: 2.5rem;
+
+  /* Radii */
+  --r-sm:   6px;
+  --r-md:   10px;
+  --r-lg:   14px;
+  --r-pill: 999px;
+
+  /* Shadows */
+  --shadow-card: 0 1px 3px rgba(0,0,0,0.06), 0 4px 16px rgba(0,0,0,0.04);
+  --shadow-input-focus: 0 0 0 3px rgba(59,130,246,0.20);
+
+  /* Layout */
+  --col-right-width: 320px;
+  --page-max: 1100px;
+  --header-h: 60px;
+}
+
+/* ─────────────────────────────────────────────
+   Reset
+   ───────────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* ─────────────────────────────────────────────
+   Base
+   ───────────────────────────────────────────── */
+body {
+  font-family: var(--font-sans);
+  font-size: 15px;
+  line-height: 1.6;
+  background-color: var(--clr-bg);
+  color: var(--clr-text-body);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ─────────────────────────────────────────────
+   Site Header
+   ───────────────────────────────────────────── */
+.site-header {
+  background-color: var(--clr-surface);
+  border-bottom: 1px solid var(--clr-border);
+  height: var(--header-h);
+  display: flex;
+  align-items: center;
+}
+
+.site-header__inner {
+  width: 100%;
+  max-width: var(--page-max);
+  margin: 0 auto;
+  padding: 0 var(--sp-8);
+}
+
+.site-header__title {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--clr-text-primary);
+  letter-spacing: -0.2px;
+}
+
+/* ─────────────────────────────────────────────
+   Error banner (outside main layout, full-width)
+   ───────────────────────────────────────────── */
+#error-banner {
+  max-width: var(--page-max);
+  margin: var(--sp-4) auto 0;
+  padding: var(--sp-3) var(--sp-5);
+  background-color: #fef2f2;
+  color: #991b1b;
+  border: 1px solid var(--clr-danger-ring);
+  border-radius: var(--r-md);
+  font-size: 0.9rem;
+  font-weight: 500;
+  line-height: 1.5;
+  /* horizontal padding matches page layout */
+  padding-left: var(--sp-8);
+  padding-right: var(--sp-8);
+}
+#error-banner[hidden] { display: none; }
+
+/* ─────────────────────────────────────────────
+   Page layout — two columns
+   ───────────────────────────────────────────── */
+.page-layout {
+  max-width: var(--page-max);
+  margin: 0 auto;
+  padding: var(--sp-8);
+  display: grid;
+  grid-template-columns: 1fr var(--col-right-width);
+  gap: var(--sp-6);
+  align-items: start;
+}
+
+.col-left,
+.col-right {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-5);
+}
+
+/* ─────────────────────────────────────────────
+   Cards
+   ───────────────────────────────────────────── */
+section {
+  background-color: var(--clr-surface);
+  border: 1px solid var(--clr-border);
+  border-radius: var(--r-lg);
+  padding: var(--sp-6);
+  box-shadow: var(--shadow-card);
+}
+
+.section-title {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  color: var(--clr-text-muted);
+  margin-bottom: var(--sp-5);
+  padding-bottom: var(--sp-3);
+  border-bottom: 1px solid var(--clr-border);
+}
+
+/* ─────────────────────────────────────────────
+   Inline field errors
+   ───────────────────────────────────────────── */
+.field-error {
+  display: block;
+  color: var(--clr-text-error);
+  font-size: 0.8rem;
+  font-weight: 500;
+  margin-top: var(--sp-1);
+  line-height: 1.4;
+}
+
+/* ─────────────────────────────────────────────
+   Form — shared input styles
+   ───────────────────────────────────────────── */
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
+.form-field label {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--clr-text-body);
+  letter-spacing: 0.01em;
+}
+
+input[type='text'],
+input[type='number'],
+select {
+  width: 100%;
+  height: 2.625rem;
+  padding: 0 var(--sp-4);
+  font-size: 0.9375rem;
+  font-family: inherit;
+  color: var(--clr-text-primary);
+  background-color: var(--clr-surface);
+  border: 1.5px solid var(--clr-border-input);
+  border-radius: var(--r-md);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+input[type='text']::placeholder,
+input[type='number']::placeholder {
+  color: var(--clr-text-muted);
+  font-weight: 400;
+}
+
+input[type='text']:hover,
+input[type='number']:hover,
+select:hover {
+  border-color: #93afd9;
+}
+
+/* Chevron for all selects */
+select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  padding-right: 2.25rem;
+  cursor: pointer;
+}
+
+/* ─────────────────────────────────────────────
+   Transaction form — 3-column field row
+   ───────────────────────────────────────────── */
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: var(--sp-4);
+  margin-bottom: var(--sp-4);
+}
+
+/* Used inside custom-category-section: input + button side by side */
+.form-row--2col {
+  grid-template-columns: 1fr auto;
+  align-items: end;
+  margin-bottom: 0;
+}
+
+/* Align the button to the bottom of the row (same height as input) */
+.form-field--btn-align {
+  gap: 0;
+  justify-content: flex-end;
+}
+
+/* Primary submit button */
+#btn-add-transaction {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 2.625rem;
+  padding: 0 var(--sp-6);
+  font-size: 0.9375rem;
+  font-family: inherit;
+  font-weight: 600;
+  color: #ffffff;
+  background-color: var(--clr-primary);
+  border: none;
+  border-radius: var(--r-md);
+  cursor: pointer;
+  letter-spacing: 0.015em;
+  transition: background-color 0.15s ease, box-shadow 0.15s ease, transform 0.1s ease;
+}
+#btn-add-transaction:hover {
+  background-color: var(--clr-primary-hover);
+  box-shadow: 0 4px 14px rgba(37,99,235,0.28);
+}
+#btn-add-transaction:active {
+  background-color: var(--clr-primary-active);
+  transform: translateY(1px);
+  box-shadow: none;
+}
+
+/* ─────────────────────────────────────────────
+   Custom category sub-section
+   ───────────────────────────────────────────── */
+#custom-category-section {
+  margin-top: var(--sp-6);
+  padding-top: var(--sp-5);
+  border-top: 1px solid var(--clr-border);
+}
+
+#custom-category-section h3 {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  color: var(--clr-text-muted);
+  margin-bottom: var(--sp-4);
+}
+
+/* Secondary outlined button */
+#btn-add-category {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 2.625rem;
+  padding: 0 var(--sp-5);
+  font-size: 0.875rem;
+  font-family: inherit;
+  font-weight: 600;
+  color: var(--clr-primary);
+  background-color: var(--clr-surface);
+  border: 1.5px solid var(--clr-primary-ring);
+  border-radius: var(--r-md);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background-color 0.15s ease, border-color 0.15s ease, transform 0.1s ease;
+}
+#btn-add-category:hover {
+  background-color: var(--clr-primary-light);
+  border-color: var(--clr-primary);
+}
+#btn-add-category:active {
+  background-color: #dbeafe;
+  border-color: var(--clr-primary-active);
+  transform: translateY(1px);
+}
+
+/* ─────────────────────────────────────────────
+   Total Balance card
+   ───────────────────────────────────────────── */
+#balance-section {
+  text-align: center;
+  background: linear-gradient(150deg, #eff6ff 0%, #f5f8ff 100%);
+  border-color: var(--clr-primary-ring);
+}
+
+#balance-section .section-title {
+  border-bottom-color: var(--clr-primary-ring);
+}
+
+#balance-display {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--clr-primary);
+  letter-spacing: -0.5px;
+  line-height: 1.2;
+}
+
+/* ─────────────────────────────────────────────
+   Chart card
+   ───────────────────────────────────────────── */
+#no-chart-msg {
+  color: var(--clr-text-muted);
+  font-size: 0.9rem;
+  font-style: italic;
+  text-align: center;
+  padding: var(--sp-4) 0;
+}
+
+#pie-chart {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin-top: var(--sp-3);
+}
+
+/* ─────────────────────────────────────────────
+   View toggle
+   ───────────────────────────────────────────── */
+#view-toggle {
+  display: flex;
+  background-color: #f3f4f6;
+  border: 1px solid var(--clr-border);
+  border-radius: var(--r-md);
+  padding: 3px;
+  gap: 3px;
+  margin-bottom: var(--sp-4);
+}
+
+.view-btn {
+  flex: 1;
+  padding: 0.4375rem var(--sp-4);
+  font-size: 0.875rem;
+  font-family: inherit;
+  font-weight: 500;
+  color: var(--clr-text-muted);
+  background-color: transparent;
+  border: none;
+  border-radius: 7px;
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+.view-btn:hover {
+  background-color: #e9eaec;
+  color: var(--clr-text-body);
+}
+.view-btn.active,
+.view-btn[aria-pressed='true'] {
+  background-color: var(--clr-surface);
+  color: var(--clr-primary);
+  font-weight: 600;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+}
+
+/* ─────────────────────────────────────────────
+   Sort / filter controls
+   ───────────────────────────────────────────── */
+#sort-controls {
+  display: flex;
+  gap: var(--sp-4);
+  margin-bottom: var(--sp-4);
+  flex-wrap: wrap;
+}
+
+.sort-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3125rem;
+  flex: 1 1 140px;
+  min-width: 0;
+}
+
+.sort-field label {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--clr-text-muted);
+}
+
+#sort-controls select {
+  height: 2.25rem;
+  font-size: 0.875rem;
+  padding: 0 var(--sp-3);
+  padding-right: 2rem;
+  background-position: right 0.625rem center;
+}
+
+/* ─────────────────────────────────────────────
+   Transaction list
+   ───────────────────────────────────────────── */
+#transaction-list {
+  list-style: none;
+  padding: 0;
+}
+
+#no-transactions-msg {
+  color: var(--clr-text-muted);
+  font-size: 0.9rem;
+  font-style: italic;
+  padding: var(--sp-6) 0;
+  text-align: center;
+}
+
+.transaction-item {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: var(--sp-4) var(--sp-3);
+  border-bottom: 1px solid var(--clr-border);
+  transition: background-color 0.12s ease;
+}
+.transaction-item:last-child {
+  border-bottom: none;
+}
+.transaction-item:hover {
+  background-color: #f8f9fc;
+}
+
+/* Item name — left side, takes remaining space */
+.tx-name {
+  flex: 1 1 0;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--clr-text-primary);
+  word-break: break-word;
+  min-width: 0;
+}
+
+/* Category badge — left side, fixed width so amounts stay aligned */
+.tx-category {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 90px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.25rem 0.75rem;
+  border-radius: var(--r-pill);
+  white-space: nowrap;
+  letter-spacing: 0.02em;
+  flex-shrink: 0;
+  /* Default: blue (fallback for custom categories) */
+  color: var(--clr-badge-text);
+  background-color: var(--clr-badge-bg);
+  border: 1px solid var(--clr-badge-border);
+}
+
+/* Per-category color palette */
+.tx-category[data-category='Food'] {
+  color: #92400e;
+  background-color: #fef3c7;
+  border-color: #fde68a;
+}
+.tx-category[data-category='Transport'] {
+  color: #1e40af;
+  background-color: #dbeafe;
+  border-color: #bfdbfe;
+}
+.tx-category[data-category='Fun'] {
+  color: #5b21b6;
+  background-color: #ede9fe;
+  border-color: #ddd6fe;
+}
+.tx-category[data-category='Health'] {
+  color: #5b21b6;
+  background-color: #ede9fe;
+  border-color: #ddd6fe;
+}
+
+/* Amount — centered, takes remaining space */
+.tx-amount {
+  flex: 1;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--clr-primary);
+  white-space: nowrap;
+  text-align: center;
+}
+
+/* Delete button — pill shape, red, icon + text */
+.btn-delete {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3125rem;
+  height: 2rem;
+  padding: 0 var(--sp-4);
+  font-size: 0.8125rem;
+  font-family: inherit;
+  font-weight: 600;
+  color: var(--clr-danger);
+  background-color: var(--clr-danger-light);
+  border: 1px solid var(--clr-danger-ring);
+  border-radius: var(--r-pill);
+  cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+.btn-delete:hover {
+  background-color: #fee2e2;
+  border-color: #f87171;
+}
+.btn-delete:active {
+  background-color: #fca5a5;
+  border-color: var(--clr-danger);
+  color: var(--clr-danger-hover);
+}
+
+.btn-delete__icon {
+  flex-shrink: 0;
+  display: block;
+}
+
+/* ─────────────────────────────────────────────
+   Monthly summary (inside transaction card)
+   ───────────────────────────────────────────── */
+#summary-section {
+  /* Not a <section> so no card styles needed — inherits parent card */
+}
+
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--sp-4) var(--sp-2);
+  border-bottom: 1px solid var(--clr-border);
+  gap: var(--sp-4);
+  border-radius: var(--r-sm);
+  transition: background-color 0.12s ease;
+}
+.summary-row:last-child { border-bottom: none; }
+.summary-row:hover { background-color: #f8f9fc; }
+
+.summary-label {
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: var(--clr-text-body);
+}
+.summary-total {
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: var(--clr-primary);
+  white-space: nowrap;
+}
+
+#no-summary-msg {
+  color: var(--clr-text-muted);
+  font-size: 0.9rem;
+  font-style: italic;
+  text-align: center;
+  padding: var(--sp-6) 0;
+}
+
+/* ─────────────────────────────────────────────
+   Focus styles
+   ───────────────────────────────────────────── */
+:focus-visible {
+  outline: 2.5px solid var(--clr-focus);
+  outline-offset: 2px;
+}
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+input[type='text']:focus-visible,
+input[type='number']:focus-visible,
+select:focus-visible {
+  outline: 2.5px solid var(--clr-focus);
+  outline-offset: 0;
+  border-color: var(--clr-focus);
+  box-shadow: var(--shadow-input-focus);
+}
+
+button:focus-visible,
+.view-btn:focus-visible,
+.btn-delete:focus-visible {
+  outline: 2.5px solid var(--clr-focus);
+  outline-offset: 2px;
+}
+
+/* ─────────────────────────────────────────────
+   Responsive — tablet (single column, keep form-row)
+   ───────────────────────────────────────────── */
+@media (max-width: 860px) {
+  .page-layout {
+    grid-template-columns: 1fr;
+    padding: var(--sp-5);
+    gap: var(--sp-4);
+  }
+
+  /* Right column flows below left on tablet */
+  .col-right {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: var(--sp-4);
+  }
+
+  #balance-section,
+  #chart-section {
+    flex: 1 1 280px;
+  }
+
+  /* Keep 3-col form row on tablet if space allows, else wrap */
+  .form-row {
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  }
+}
+
+/* ─────────────────────────────────────────────
+   Responsive — mobile
+   ───────────────────────────────────────────── */
+@media (max-width: 560px) {
+  :root {
+    --header-h: 52px;
+  }
+
+  .site-header__inner {
+    padding: 0 var(--sp-5);
+  }
+
+  .site-header__title {
+    font-size: 1rem;
+  }
+
+  .page-layout {
+    padding: var(--sp-4);
+    gap: var(--sp-4);
+  }
+
+  section {
+    padding: var(--sp-5);
+    border-radius: var(--r-md);
+  }
+
+  /* Single-column form on mobile */
+  .form-row {
+    grid-template-columns: 1fr;
+    gap: var(--sp-3);
+  }
+
+  /* Custom category: also stack on mobile */
+  .form-row--2col {
+    grid-template-columns: 1fr;
+  }
+
+  .form-field--btn-align {
+    justify-content: stretch;
+  }
+
+  #btn-add-category {
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* Right column: stack vertically on mobile */
+  .col-right {
+    flex-direction: column;
+  }
+
+  #balance-display {
+    font-size: 1.75rem;
+  }
+
+  /* Sort controls: stack */
+  #sort-controls {
+    flex-direction: column;
+    gap: var(--sp-3);
+  }
+
+  .sort-field {
+    flex: 1 1 100%;
+  }
+
+  /* Transaction rows: name on top, then badge/amount/delete in a line */
+  .transaction-item {
+    flex-wrap: wrap;
+    gap: var(--sp-2);
+    padding: var(--sp-3) var(--sp-2);
+  }
+
+  .tx-name {
+    flex-basis: 100%;
+  }
+
+  .tx-category {
+    min-width: 72px;
+    font-size: 0.7rem;
+    padding: 0.1875rem 0.5rem;
+  }
+
+  .tx-amount {
+    font-size: 0.9rem;
+  }
+
+  .btn-delete {
+    padding: 0 var(--sp-3);
+    font-size: 0.75rem;
+    height: 1.875rem;
+  }
+}

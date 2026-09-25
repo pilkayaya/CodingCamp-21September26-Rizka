@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Expense &amp; Budget Visualizer</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <!-- Error Banner -->
+  <div id="error-banner" role="alert" aria-live="polite" hidden></div>
+
+  <!-- Site Header -->
+  <header class="site-header">
+    <div class="site-header__inner">
+      <h1 class="site-header__title">Expense &amp; Budget Visualizer</h1>
+    </div>
+  </header>
+
+  <!-- Two-column page layout -->
+  <div class="page-layout">
+
+    <!-- ── LEFT COLUMN ── -->
+    <div class="col-left">
+
+      <!-- Add Transaction Form -->
+      <section id="form-section" aria-label="Add Transaction">
+        <h2 class="section-title">Add Transaction</h2>
+
+        <form id="transaction-form" novalidate>
+          <!-- 3-col field row on desktop -->
+          <div class="form-row">
+            <div class="form-field">
+              <label for="input-name">Item Name</label>
+              <input
+                type="text"
+                id="input-name"
+                name="name"
+                maxlength="100"
+                placeholder="e.g. Lunch"
+                autocomplete="off"
+              />
+            </div>
+
+            <div class="form-field">
+              <label for="input-amount">Amount (Rp)</label>
+              <input
+                type="number"
+                id="input-amount"
+                name="amount"
+                min="1"
+                max="999999999999"
+                step="1"
+                placeholder="e.g. 12500"
+              />
+            </div>
+
+            <div class="form-field">
+              <label for="input-category">Category</label>
+              <select id="input-category" name="category">
+                <option value="">-- Select a category --</option>
+              </select>
+            </div>
+          </div>
+
+          <button type="submit" id="btn-add-transaction">Add Transaction</button>
+        </form>
+
+        <!-- Custom Category Manager -->
+        <div id="custom-category-section">
+          <h3>Add Custom Category</h3>
+          <form id="category-form" novalidate>
+            <div class="form-row form-row--2col">
+              <div class="form-field">
+                <label for="input-custom-category">Category Name</label>
+                <input
+                  type="text"
+                  id="input-custom-category"
+                  name="customCategory"
+                  maxlength="50"
+                  placeholder="e.g. Health"
+                  autocomplete="off"
+                />
+              </div>
+              <div class="form-field form-field--btn-align">
+                <button type="submit" id="btn-add-category">Add Category</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <!-- Transactions Card -->
+      <section id="transaction-list-section" aria-label="Transaction List">
+        <h2 class="section-title">Transactions</h2>
+
+        <!-- View Toggle (Transaction List ↔ Monthly Summary) -->
+        <div id="view-toggle" role="group" aria-label="View toggle">
+          <button id="btn-view-list" class="view-btn active" aria-pressed="true">Transactions</button>
+          <button id="btn-view-summary" class="view-btn" aria-pressed="false">Monthly Summary</button>
+        </div>
+
+        <!-- Sort / Filter Controls -->
+        <div id="sort-controls" aria-label="Sort and filter transactions">
+          <div class="sort-field">
+            <label for="sort-amount">Amount</label>
+            <select id="sort-amount" name="sort-amount">
+              <option value="">No Sorting</option>
+              <option value="asc">Lowest to Highest</option>
+              <option value="desc">Highest to Lowest</option>
+            </select>
+          </div>
+          <div class="sort-field">
+            <label for="filter-category">Category</label>
+            <select id="filter-category" name="filter-category">
+              <option value="">All Categories</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Transaction List -->
+        <ul id="transaction-list" aria-live="polite">
+          <li id="no-transactions-msg">No transactions added yet.</li>
+        </ul>
+
+        <!-- Monthly Summary View -->
+        <div id="summary-section" aria-label="Monthly Summary" hidden>
+          <div id="monthly-summary-list" aria-live="polite">
+            <p id="no-summary-msg">No spending data available.</p>
+          </div>
+        </div>
+
+      </section>
+
+    </div><!-- /col-left -->
+
+    <!-- ── RIGHT COLUMN ── -->
+    <div class="col-right">
+
+      <!-- Total Balance Card -->
+      <section id="balance-section" aria-label="Total Balance">
+        <h2 class="section-title">Total Balance</h2>
+        <p id="balance-display">Rp 0</p>
+      </section>
+
+      <!-- Expense Breakdown / Pie Chart Card -->
+      <section id="chart-section" aria-label="Expense Breakdown">
+        <h2 class="section-title">Expense Breakdown</h2>
+        <p id="no-chart-msg">No spending data available.</p>
+        <canvas id="pie-chart" role="img" aria-label="Pie chart of spending by category"></canvas>
+      </section>
+
+    </div><!-- /col-right -->
+
+  </div><!-- /page-layout -->
+
+  <!-- Chart.js 4.x via CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+  <!-- Application Logic -->
+  <script src="js/app.js" defer></script>
+</body>
+</html>
